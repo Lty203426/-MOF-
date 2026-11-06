@@ -1,0 +1,50 @@
+_audit_creation_date      'Feb. 4, 2023'
+_audit_creation_method    'Draft CIF file generated with Atomsk'
+ 
+_chemical_name_common             ?
+_chemical_melting_point           ?
+_chemical_formula_iupac           'Si4 O8'
+_chemical_formula_moiety          'Si4 O8'
+_chemical_formula_sum             'Si4 O8'
+_chemical_formula_weight          240.332
+_chemical_compound_source         ?
+_chemical_absolute_configuration  ?
+_exptl_crystal_description        'EDIT-ENTRY'
+_diffrn_measurement_device_type   'EDIT-ENTRY'
+ 
+_space_group_IT_number            1
+_space_group_crystal_system       tetragonal
+_symmetry_space_group_name_Hall   'P 1'
+_symmetry_space_group_name_H-M    'P 1'
+ 
+loop_
+_space_group_symop_operation_xyz
+'+x,+y,+z'
+ 
+_cell_length_a                    4.9780
+_cell_length_b                    4.9780
+_cell_length_c                    6.9480
+_cell_angle_alpha                 90.0000
+_cell_angle_beta                  90.0000
+_cell_angle_gamma                 90.0000
+_cell_volume                      172.1748
+ 
+loop_
+ _atom_site_label
+ _atom_site_type_symbol
+ _atom_site_fract_x
+ _atom_site_fract_y
+ _atom_site_fract_z
+ _atom_site_occupancy
+Si1  Si  -0.199879 -0.199879 -0.500000 1.000000
+O1  O  -0.260145 -0.396746 -0.321531 1.000000
+Si2  Si  0.199879  0.199879  0.000000 1.000000
+O2  O  0.260145  0.396746  0.178469 1.000000
+Si3  Si  -0.300121  0.300121 -0.250000 1.000000
+O3  O  -0.103254  0.239855 -0.071531 1.000000
+Si4  Si  0.300121 -0.300121  0.250000 1.000000
+O4  O  0.103254 -0.239855  0.428469 1.000000
+O5  O  -0.239855  0.103254 -0.428469 1.000000
+O6  O  0.239855 -0.103254  0.071531 1.000000
+O7  O  -0.396746 -0.260145  0.321531 1.000000
+O8  O  0.396746  0.260145 -0.178469 1.000000

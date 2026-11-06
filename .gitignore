@@ -1,0 +1,8 @@
+ai-engine/.venv/
+ai-engine/data/
+ai-engine/**/__pycache__/
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.log
+.env

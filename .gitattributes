@@ -1,0 +1,2 @@
+# Preserve exact source bytes and their published SHA-256 digests.
+research/data/* -text

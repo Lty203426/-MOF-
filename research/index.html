@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#121a17">
+  <title>MOF Studio · 材料研究工作台</title>
+  <link rel="stylesheet" href="research.css?v=20261106.1">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="../index.html" target="_top">MOF <span>STUDIO</span><small>材料研究工作台</small></a>
+    <div class="head-actions"><span id="edition">2026.11.06</span><button id="compute-entry">打开 AI 计算</button></div>
+  </header>
+  <nav id="navigation" aria-label="研究模块">
+    <button data-page="overview">研究总览</button><button data-page="library">材料库</button>
+    <button data-page="archive">数据表</button><button data-page="models">模型清单</button>
+    <button data-page="predict">AI 计算服务</button>
+  </nav>
+  <main id="content" aria-busy="true"><p class="loading" role="status">正在读取材料目录…</p></main>
+  <div id="notice" role="status" aria-live="polite"></div>
+  <script type="module" src="research.js?v=20261106.1"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+.studio-ai-entry{color:#a4f1d6!important;border-color:#43b793!important;font-weight:700}
+.studio-ai-dialog{position:fixed;inset:12px;z-index:200000;display:flex;flex-direction:column;background:#080e18;border:1px solid #3d6a76;border-radius:8px;overflow:hidden;box-shadow:0 20px 100px #000b;color:#eaf5f8;font:14px 'Microsoft YaHei',sans-serif}
+.studio-ai-dialog>header{display:grid;gap:10px;background:#102332;padding:12px 18px}
+.studio-ai-title,.studio-ai-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+.studio-ai-dialog header b{font-size:17px;display:block}.studio-ai-dialog header small{display:block;color:#9db6c4;margin-top:4px}
+.studio-ai-nav{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid #2b4b57}
+.studio-ai-dialog .studio-ai-nav button{background:transparent;border:0;border-bottom:2px solid transparent;color:#a9c2cd;border-radius:0;padding:9px 12px;white-space:nowrap}
+.studio-ai-dialog .studio-ai-nav button.active{color:#8fe2bc;border-bottom-color:#59c8a0}
+.studio-ai-meta{color:#a9c2cd;font-size:12px}.studio-ai-meta>span{min-width:0;overflow-wrap:anywhere}
+.studio-ai-dialog button{border:1px solid #497585;color:#eaf5f8;background:#174052;border-radius:5px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.studio-ai-dialog button:disabled{opacity:.55;cursor:not-allowed}
+.studio-ai-dialog button:focus-visible{outline:2px solid #7ee1b8;outline-offset:2px}.studio-ai-dialog iframe{flex:1;min-height:0;border:0;width:100%;background:#080e18}
+.studio-ai-offline{padding:10px 20px;color:#f4ce8b;background:#302b22}.intro-buttons{flex-wrap:wrap}
+@media(max-width:800px){.studio-ai-dialog{inset:0;border-radius:0}.studio-ai-dialog>header{padding:10px}.studio-ai-title{align-items:flex-start}.studio-ai-title>div{min-width:0}.studio-ai-title button{font-size:12px}.studio-ai-nav{margin:0 -10px;padding:0 6px}.studio-ai-nav button{padding:9px 10px}.studio-ai-meta{align-items:flex-start}.studio-ai-meta>span{font-size:11px;line-height:1.4}.studio-ai-meta button{font-size:11px}.camera-tools{flex-wrap:wrap;max-width:65%}.studio-ai-dialog header small{font-size:11px}}

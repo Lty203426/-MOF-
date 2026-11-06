@@ -1,0 +1,43 @@
+_audit_creation_method VASP-DDEC plugin
+
+_cell_length_a        6.784646
+_cell_length_b        7.220714
+_cell_length_c        7.094781
+
+_cell_angle_alpha     90.0
+_cell_angle_beta     90.0
+_cell_angle_gamma     90.0
+
+_symmetry_space_group_name_Hall 'P 1' 
+_symmetry_space_group_name_H-M  'P 1' 
+
+loop_
+		_symmetry_equiv_pos_as_xyz
+		'x,y,z' 
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_charge
+Fe          Fe          0.50000        0.00000        0.00000       0.502284
+H          H          0.18627        0.71310        0.00000       0.117711
+H          H          0.81373        0.28690        0.00000       0.117709
+H          H          0.81373        0.71310        0.00000       0.117704
+H          H          0.18627        0.28690        0.00000       0.117705
+Pt          Pt          0.50000        0.50000        0.50000       0.065126
+C          C          0.50000        0.30393        0.69646       0.033629
+C          C          0.50000        0.69607        0.69646       0.033627
+C          C          0.50000        0.30393        0.30354       0.033628
+C          C          0.50000        0.69607        0.30354       0.033626
+C          C          0.10344        0.84173        0.00000       0.054604
+C          C          0.89656        0.15827        0.00000        0.05462
+C          C          0.89656        0.84173        0.00000       0.054619
+C          C          0.10344        0.15827        0.00000       0.054603
+N          N          0.50000        0.18708        0.81058      -0.309109
+N          N          0.50000        0.81292        0.81058      -0.309109
+N          N          0.50000        0.18708        0.18942      -0.309109
+N          N          0.50000        0.81292        0.18942      -0.309109
+N          N          0.20518        0.00000        0.00000      -0.077354
+N          N          0.79482        0.00000        0.00000      -0.077405
