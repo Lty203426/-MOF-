@@ -9,6 +9,20 @@
   ];
   const websitePages = [['overview', '研究总览'], ['library', '材料库'], ['archive', '数据表'], ['models', '模型清单'], ['predict', 'AI 计算服务']];
   let sameServer = false;
+  // 服务端口被占用时会自动顺延，所以不能假设固定 8001；no-cors 探测能连上即视为存在。
+  async function probeService(base) {
+    try {
+      const response = await fetch(base + '/api/integration/status', { mode: 'no-cors', signal: AbortSignal.timeout(1500) });
+      return response.type === 'opaque' || response.ok;
+    } catch { return false; }
+  }
+  async function findStudioService() {
+    for (let port = 8001; port <= 8020; port++) {
+      const base = 'http://127.0.0.1:' + port;
+      if (await probeService(base)) return base;
+    }
+    return null;
+  }
   const serviceReady = (async () => {
     if (!/^https?:$/.test(location.protocol) || location.hostname.endsWith('.github.io')) return false;
     try {
@@ -102,8 +116,16 @@
     dialog.innerHTML = `<header><div class="studio-ai-title"><div><b>材料研究工作台</b><small data-ai-feedback>保留当前实验进度 · 预测使用参考或导入晶体</small></div><button data-ai-close aria-label="返回三维实验室">返回实验室 ×</button></div>
       <nav class="studio-ai-nav" role="tablist" aria-label="研究模块">${tabs.map(([key, label]) => `<button type="button" role="tab" data-ai-page="${key}" aria-selected="${currentPage === key}" class="${currentPage === key ? 'active' : ''}">${label}</button>`).join('')}</nav>
       <div class="studio-ai-meta"><span data-ai-summary>正在读取资料索引…</span><button type="button" data-ai-sync>${sameServer ? '同步当前实验记录' : '导出当前实验记录'}</button></div></header>
-      ${http ? `<iframe title="AI 材料研究工作台" src="${frameUrl}"></iframe>` : '<div class="studio-ai-offline">请双击工程中的「启动AI实验室.cmd」打开材料库与 AI 计算工作台。<p><a href="http://127.0.0.1:8001/" target="_blank" rel="noopener">打开本机完整实验室 ↗</a></p></div>'}`;
+      ${http ? `<iframe title="AI 材料研究工作台" src="${frameUrl}"></iframe>` : '<div class="studio-ai-offline">当前是直接双击打开的本地文件，浏览器安全限制会拦截资料读取。请双击工程中的「启动AI实验室.cmd」，它会启动服务并自动打开完整实验室。<p><a href="http://127.0.0.1:8001/" target="_blank" rel="noopener">若服务已启动，点此打开本机完整实验室 ↗</a></p></div>'}`;
     document.body.append(dialog);
+    if (!http) {
+      const offline = dialog.querySelector('.studio-ai-offline');
+      findStudioService().then(base => {
+        if (!base || !dialog) return;
+        const link = offline?.querySelector('a');
+        if (link) { link.href = base + '/'; link.textContent = '✓ 已检测到本机 AI 实验室已启动，点此打开完整工作台 ↗（' + base + '）'; }
+      });
+    }
     if (dialog.querySelector('iframe')) dialog.querySelector('iframe').onload = () => selectPage(currentPage);
     dialog.querySelector('[data-ai-close]').onclick = close;
     dialog.querySelector('[data-ai-sync]').onclick = syncSnapshot;
