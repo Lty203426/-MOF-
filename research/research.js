@@ -40,6 +40,10 @@ async function probeService(base) {
 async function findService() {
   const saved = storedService().replace(/\/$/, '');
   if (await probeService(saved)) return saved;
+  // HTTPS 网页（如 GitHub Pages）被浏览器的私有网络访问策略禁止探测本机端口，
+  // 继续扫 8001–8020 只会产生 20 条失败请求和控制台报错，因此直接返回未探测到。
+  const blocked = location.protocol === 'https:' && !['localhost','127.0.0.1','[::1]'].includes(location.hostname);
+  if (blocked) return null;
   for (let port = 8001; port <= 8020; port++) {
     const base = 'http://127.0.0.1:' + port;
     if (base === saved) continue;
@@ -47,21 +51,21 @@ async function findService() {
   }
   return null;
 }
-async function openCompute(page='predict', material=null) {
-  notice('正在检测本机计算服务…');
-  const base = await findService();
-  if (!base) {
-    notice('未检测到本机计算服务：请先在工程文件夹运行「启动AI实验室.cmd」，等服务启动后再试。');
-    return;
-  }
-  try {
-    const url = new URL(base + '/ai/');
-    url.searchParams.set('page',page);
-    if (material) url.searchParams.set('material',material);
-    try { localStorage.setItem(serviceKey, base); } catch {}
-    window.open(url.href, '_blank', 'noopener,noreferrer');
-    notice('已打开本机计算服务：' + base);
-  } catch (error) { notice(error.message); }
+// 必须同步打开新窗口：先 await 探测再 window.open 会被浏览器当成非用户操作而拦截弹窗。
+// 地址用已保存值（默认 8001），探测只在后台用来更正默认端口，不阻塞打开。
+function openCompute(page='predict', material=null) {
+  let base;
+  try { base = validateService(storedService()); } catch (error) { notice(error.message); return; }
+  const url = new URL(base + '/ai/');
+  url.searchParams.set('page',page);
+  if (material) url.searchParams.set('material',material);
+  window.open(url.href, '_blank', 'noopener,noreferrer');
+  notice('正在打开计算服务：' + base + '（若页面打不开，请先运行「启动AI实验室.cmd」）');
+  findService().then(found => {
+    if (!found || found === base) return;
+    try { localStorage.setItem(serviceKey, found); } catch {}
+    notice('检测到本机服务在 ' + found + '，已记为默认地址');
+  }).catch(() => {});
 }
 function pagination(total) {
   return `<div class="pagination"><button id="previous" ${state.offset===0?'disabled':''}>上一页</button><span>${total?state.offset+1:0}–${Math.min(state.offset+size,total)} / ${total.toLocaleString()}</span><button id="next" ${state.offset+size>=total?'disabled':''}>下一页</button></div>`;
@@ -161,7 +165,7 @@ function service(page='predict') {
     const el=$('#service-status');
     if(!el)return;
     if(base){el.textContent='✓ 已检测到本机计算服务：'+base;$('#service-url').value=base;try{localStorage.setItem(serviceKey,base);}catch{}}
-    else if(location.protocol==='https:'){el.textContent='✗ 未自动检测到本机计算服务。HTTPS 网页可能被浏览器限制探测本机端口，请先运行「启动AI实验室.cmd」，再把启动后显示的地址填入下方。';}
+    else if(location.protocol==='https:'){el.textContent='ℹ 公网 HTTPS 页面无法探测本机端口（浏览器安全策略），这属正常现象。请先在本机运行「启动AI实验室.cmd」，再点下方按钮，会直接打开本机计算工作台（默认端口 8001）。';}
     else{el.textContent='✗ 未检测到本机计算服务（已扫描 8001–8020 端口）。请先运行「启动AI实验室.cmd」。';}
   });
   for(const [button,target] of [['predict','predict'],['properties','properties'],['screening','screening'],['history','history']])$('#launch-'+button).onclick=()=>openCompute(target);
