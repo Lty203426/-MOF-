@@ -1,1 +1,1 @@
-{"version":"2026.11.07","release":"20261107.1","gas_models":4,"property_models":7,"materials":5867,"parsed_materials":5845,"csv_tables":106,"archive_files_local":6765,"chemistry_kernel":"unchanged","static_inference":false,"notes":"AI 工作台支持自动探测本机计算服务（8001-8020）"}
+{"version":"2026.11.07","release":"20261107.2","gas_models":4,"property_models":7,"materials":5867,"parsed_materials":5845,"csv_tables":106,"archive_files_local":6765,"chemistry_kernel":"unchanged","static_inference":false,"notes":"AI 工作台：修复公网 HTTPS 页点击“气体预测”无响应（同步开窗，避免弹窗拦截）；HTTPS 下不再扫描本机端口，改为明确提示"}
