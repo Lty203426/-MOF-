@@ -159,7 +159,7 @@ function models() {
   $('#models-compute').onclick=()=>openCompute('models');
 }
 function service(page='predict') {
-  $('#content').innerHTML=`<div class="eyebrow">CGCNN · 本地 CPU / 已部署的 HTTPS 服务</div><h1>AI 计算服务</h1><p>当前网站可独立浏览材料和数据；模型推理、批量筛选、账户与预测历史由计算服务提供。</p><p id="service-status" class="caption" role="status">正在检测本机计算服务…</p><label for="service-url">计算服务地址</label><form id="service-form" class="service-form"><input id="service-url" type="url" required value="${esc(storedService())}" placeholder="http://127.0.0.1:8001"><button type="submit">保存地址</button></form><div class="service-actions"><button id="launch-predict">气体预测 ↗</button><button id="launch-properties">材料性质 ↗</button><button id="launch-screening">批量筛选 ↗</button><button id="launch-history">预测历史 ↗</button></div><ol class="steps"><li>在桌面「MOF-Studio_交互升级_试剂瓶搅拌滴定」文件夹运行「启动AI实验室.cmd」。</li><li>使用启动后显示的实际地址。本机默认从 8001 端口启动，端口占用时自动选择下一可用端口；本页会自动探测 8001–8020。</li><li>在计算工作台登录，选择结构与模型后提交；实验快照与结果关联保存在计算服务中。</li></ol><p class="warning">GitHub Pages 不运行 Python / PyTorch。此页面不会在计算服务未启动时显示预测结果。HTTPS 网页通过新标签打开本机服务，不嵌入不安全的 HTTP 计算页面。</p><p class="source-note">使用远程 HTTPS 服务时，材料上传与实验同步发生在该服务内；保存地址不会自动上传当前实验记录。</p>`;
+  $('#content').innerHTML=`<div class="eyebrow">CGCNN · 本地 CPU / 已部署的 HTTPS 服务</div><h1>AI 计算服务</h1><p>当前网站可独立浏览材料和数据；模型推理、批量筛选、账户与预测历史由计算服务提供。</p><p id="service-status" class="caption" role="status">正在检测本机计算服务…</p><label for="service-url">计算服务地址</label><form id="service-form" class="service-form"><input id="service-url" type="url" required value="${esc(storedService())}" placeholder="http://127.0.0.1:8001"><button type="submit">保存地址</button></form><div class="service-actions"><button id="launch-predict">气体预测 ↗</button><button id="launch-properties">材料性质 ↗</button><button id="launch-screening">批量筛选 ↗</button><button id="launch-history">预测历史 ↗</button></div><ol class="steps"><li>在桌面「MOF-Studio_交互升级_试剂瓶搅拌滴定」文件夹运行「启动AI实验室.cmd」。</li><li>使用启动后显示的实际地址。本机默认从 8001 端口启动，端口占用时自动选择下一可用端口；本页会自动探测 8001–8020。</li><li>在计算工作台登录，选择结构与模型后提交；实验快照与结果关联保存在计算服务中。</li></ol><p class="warning">GitHub Pages 不运行 Python / PyTorch。此页面不会在计算服务未启动时显示预测结果。HTTPS 网页通过新标签打开本机服务，不嵌入不安全的 HTTP 计算页面。</p><div id="demo-predictions" class="table-preview"><p class="caption">正在读取预置模型输出…</p></div><p class="source-note">使用远程 HTTPS 服务时，材料上传与实验同步发生在该服务内；保存地址不会自动上传当前实验记录。</p>`;
   $('#service-form').onsubmit=event=>{event.preventDefault();try{const value=validateService($('#service-url').value);localStorage.setItem(serviceKey,value);$('#service-url').value=value;notice('计算服务地址已保存');}catch(error){notice(error.message);}};
   findService().then(base=>{
     const el=$('#service-status');
@@ -169,6 +169,27 @@ function service(page='predict') {
     else{el.textContent='✗ 未检测到本机计算服务（已扫描 8001–8020 端口）。请先运行「启动AI实验室.cmd」。';}
   });
   for(const [button,target] of [['predict','predict'],['properties','properties'],['screening','screening'],['history','history']])$('#launch-'+button).onclick=()=>openCompute(target);
+  loadDemoPredictions();
+}
+// 预置模型输出：把本机真实推理的结果存成静态 JSON，公网或其他电脑上也能展示（不伪造、不现场计算）。
+async function loadDemoPredictions(){
+  const box=$('#demo-predictions');
+  if(!box)return;
+  try{
+    const data=await readJSON('demo-predictions.json');
+    const mats=data.materials||[];
+    if(!mats.length)throw new Error('空');
+    const gases=mats[0].gas||[], props=mats[0].properties||[];
+    const cell=v=>Number(v).toLocaleString('zh-CN',{maximumSignificantDigits:5});
+    box.innerHTML=`<h2>预置模型输出（离线可见）</h2>
+      <p class="caption">${esc(data.note||'')} 生成于 ${esc(data.generated||'')}，引擎 ${esc(data.engine||'')}；${mats.length} 个结构 × ${gases.length} 个气体模型、${props.length} 项材料性质。</p>
+      <h3>气体吸附相关预测</h3>
+      <div class="table-scroll"><table><thead><tr><th>结构</th>${gases.map(g=>`<th>${esc(g.label)}</th>`).join('')}</tr></thead><tbody>${mats.map(m=>`<tr><td>${esc(m.name)}<small>${esc(m.formula||'')}${m.atoms?' · '+m.atoms+' 原子':''}</small></td>${(m.gas||[]).map(g=>`<td>${cell(g.value)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+      <p class="caption">${esc(data.gas_unit_note||'')}</p>
+      <h3>材料性质预测</h3>
+      <div class="table-scroll"><table><thead><tr><th>结构</th>${props.map(p=>`<th>${esc(p.label)}<small>${esc(p.unit||'')}</small></th>`).join('')}</tr></thead><tbody>${mats.map(m=>`<tr><td>${esc(m.name)}</td>${(m.properties||[]).map(p=>`<td>${cell(p.value)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+      <p class="warning">以上为预置的模型输出，用于展示计算链路与界面，不等同于实验测量，也不作为材料设计依据；实时推理请在本机启动计算服务后使用。</p>`;
+  }catch(error){box.innerHTML='<p class="caption">预置模型输出暂不可用。</p>';}
 }
 function navigate(page) {
   clearTimeout(searchTimer);scene?.dispose();scene=null;viewVersion++;selectionVersion++;
