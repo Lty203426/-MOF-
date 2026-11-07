@@ -29,13 +29,38 @@ export function validateService(value) {
   }
   return url.href.replace(/\/$/, '');
 }
-function openCompute(page='predict', material=null) {
+// 计算服务端口被占用时会自动顺延（8001→8002…），因此不能写死 8001：
+// 先试保存过的地址，再扫描 8001–8020。no-cors 模式下能连上即视为服务存在。
+async function probeService(base) {
   try {
-    const base = validateService(storedService());
+    const response = await fetch(base + '/api/integration/status', { mode: 'no-cors', signal: AbortSignal.timeout(1500) });
+    return response.type === 'opaque' || response.ok;
+  } catch { return false; }
+}
+async function findService() {
+  const saved = storedService().replace(/\/$/, '');
+  if (await probeService(saved)) return saved;
+  for (let port = 8001; port <= 8020; port++) {
+    const base = 'http://127.0.0.1:' + port;
+    if (base === saved) continue;
+    if (await probeService(base)) return base;
+  }
+  return null;
+}
+async function openCompute(page='predict', material=null) {
+  notice('正在检测本机计算服务…');
+  const base = await findService();
+  if (!base) {
+    notice('未检测到本机计算服务：请先在工程文件夹运行「启动AI实验室.cmd」，等服务启动后再试。');
+    return;
+  }
+  try {
     const url = new URL(base + '/ai/');
     url.searchParams.set('page',page);
     if (material) url.searchParams.set('material',material);
+    try { localStorage.setItem(serviceKey, base); } catch {}
     window.open(url.href, '_blank', 'noopener,noreferrer');
+    notice('已打开本机计算服务：' + base);
   } catch (error) { notice(error.message); }
 }
 function pagination(total) {
@@ -130,8 +155,15 @@ function models() {
   $('#models-compute').onclick=()=>openCompute('models');
 }
 function service(page='predict') {
-  $('#content').innerHTML=`<div class="eyebrow">CGCNN · 本地 CPU / 已部署的 HTTPS 服务</div><h1>AI 计算服务</h1><p>当前网站可独立浏览材料和数据；模型推理、批量筛选、账户与预测历史由计算服务提供。</p><label for="service-url">计算服务地址</label><form id="service-form" class="service-form"><input id="service-url" type="url" required value="${esc(storedService())}" placeholder="http://127.0.0.1:8001"><button type="submit">保存地址</button></form><div class="service-actions"><button id="launch-predict">气体预测 ↗</button><button id="launch-properties">材料性质 ↗</button><button id="launch-screening">批量筛选 ↗</button><button id="launch-history">预测历史 ↗</button></div><ol class="steps"><li>在桌面「MOF-Studio_交互升级_试剂瓶搅拌滴定」文件夹运行「启动AI实验室.cmd」。</li><li>使用启动后显示的实际地址。本机默认从 8001 端口启动，端口占用时自动选择下一可用端口。</li><li>在计算工作台登录，选择结构与模型后提交；实验快照与结果关联保存在计算服务中。</li></ol><p class="warning">GitHub Pages 不运行 Python / PyTorch。此页面不会在计算服务未启动时显示预测结果。HTTPS 网页通过新标签打开本机服务，不嵌入不安全的 HTTP 计算页面。</p><p class="source-note">使用远程 HTTPS 服务时，材料上传与实验同步发生在该服务内；保存地址不会自动上传当前实验记录。</p>`;
+  $('#content').innerHTML=`<div class="eyebrow">CGCNN · 本地 CPU / 已部署的 HTTPS 服务</div><h1>AI 计算服务</h1><p>当前网站可独立浏览材料和数据；模型推理、批量筛选、账户与预测历史由计算服务提供。</p><p id="service-status" class="caption" role="status">正在检测本机计算服务…</p><label for="service-url">计算服务地址</label><form id="service-form" class="service-form"><input id="service-url" type="url" required value="${esc(storedService())}" placeholder="http://127.0.0.1:8001"><button type="submit">保存地址</button></form><div class="service-actions"><button id="launch-predict">气体预测 ↗</button><button id="launch-properties">材料性质 ↗</button><button id="launch-screening">批量筛选 ↗</button><button id="launch-history">预测历史 ↗</button></div><ol class="steps"><li>在桌面「MOF-Studio_交互升级_试剂瓶搅拌滴定」文件夹运行「启动AI实验室.cmd」。</li><li>使用启动后显示的实际地址。本机默认从 8001 端口启动，端口占用时自动选择下一可用端口；本页会自动探测 8001–8020。</li><li>在计算工作台登录，选择结构与模型后提交；实验快照与结果关联保存在计算服务中。</li></ol><p class="warning">GitHub Pages 不运行 Python / PyTorch。此页面不会在计算服务未启动时显示预测结果。HTTPS 网页通过新标签打开本机服务，不嵌入不安全的 HTTP 计算页面。</p><p class="source-note">使用远程 HTTPS 服务时，材料上传与实验同步发生在该服务内；保存地址不会自动上传当前实验记录。</p>`;
   $('#service-form').onsubmit=event=>{event.preventDefault();try{const value=validateService($('#service-url').value);localStorage.setItem(serviceKey,value);$('#service-url').value=value;notice('计算服务地址已保存');}catch(error){notice(error.message);}};
+  findService().then(base=>{
+    const el=$('#service-status');
+    if(!el)return;
+    if(base){el.textContent='✓ 已检测到本机计算服务：'+base;$('#service-url').value=base;try{localStorage.setItem(serviceKey,base);}catch{}}
+    else if(location.protocol==='https:'){el.textContent='✗ 未自动检测到本机计算服务。HTTPS 网页可能被浏览器限制探测本机端口，请先运行「启动AI实验室.cmd」，再把启动后显示的地址填入下方。';}
+    else{el.textContent='✗ 未检测到本机计算服务（已扫描 8001–8020 端口）。请先运行「启动AI实验室.cmd」。';}
+  });
   for(const [button,target] of [['predict','predict'],['properties','properties'],['screening','screening'],['history','history']])$('#launch-'+button).onclick=()=>openCompute(target);
 }
 function navigate(page) {
