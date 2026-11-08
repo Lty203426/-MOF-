@@ -1,5 +1,5 @@
 import { createScene } from './scene.js';
-import { mountLab } from './lab.js';
+import { mountLab } from './lab.js?v=20261108.4';
 
 const $ = selector => document.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -171,7 +171,7 @@ document.querySelectorAll('[data-page]').forEach(button=>button.onclick=()=>navi
 window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===window.parent&&event.data?.type==='mof-ai:navigate'&&state.catalog)navigate(event.data.page);});
 window.addEventListener('pagehide',()=>{scene?.dispose();clearTimeout(searchTimer);clearTimeout(noticeTimer);});
 try{
-  state.catalog=await readJSON('catalog.json?v=20261106.1');
+  state.catalog=await readJSON('catalog.json?v=20261108.4');
   $('#content').setAttribute('aria-busy','false');
   navigate(new URLSearchParams(location.search).get('page')||'overview');
 }catch(error){$('#content').setAttribute('aria-busy','false');$('#content').innerHTML=`<h1>研究目录暂不可用</h1><p class="error">${esc(error.message)}</p><button id="reload">重新加载</button>`;$('#reload').onclick=()=>location.reload();}
