@@ -25,6 +25,12 @@
   }
   const serviceReady = (async () => {
     if (!/^https?:$/.test(location.protocol) || location.hostname.endsWith('.github.io')) return false;
+    // 只有本机/局域网地址才可能挂着 FastAPI 计算服务；公网静态托管上探测
+    // 只会得到一条 404 报错，因此直接判定为纯网页模式。
+    const host = location.hostname;
+    const local = ['localhost', '127.0.0.1', '[::1]'].includes(host)
+      || /^(192\.168\.|10\.|172\.(1[6-9]|2\d|3[01])\.)/.test(host);
+    if (!local) return false;
     try {
       const response = await fetch('/api/integration/status', {signal: AbortSignal.timeout(3500)});
       const data = response.ok && await response.json();
@@ -91,7 +97,7 @@
   async function loadStatus() {
     const status = dialog.querySelector('[data-ai-summary]');
     if (!sameServer) {
-      status.textContent = '网站材料与数据目录 · 真实 AI 推理由计算服务提供';
+      status.textContent = '材料与数据目录 · AI 实验室在浏览器内直接运行真实 CGCNN 模型';
       return;
     }
     try {
