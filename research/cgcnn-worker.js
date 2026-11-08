@@ -8,12 +8,25 @@ async function cachedFetch(url) {
     const cache = await caches.open(CACHE);
     const hit = await cache.match(url);
     if (hit) return hit;
-    const response = await fetch(url, { cache: 'force-cache' });
+    const response = await fetchRetry(url, { cache: 'force-cache' });
     if (response.ok) await cache.put(url, response.clone());
     return response;
   } catch {
-    return fetch(url);
+    return fetchRetry(url);
   }
+}
+
+async function fetchRetry(url, options, tries = 4) {
+  let last;
+  for (let attempt = 0; attempt < tries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+      if (response.ok || (response.status >= 400 && response.status < 500 && response.status !== 408)) return response;
+      last = new Error('HTTP ' + response.status);
+    } catch (error) { last = error; }
+    await new Promise(resolve => setTimeout(resolve, 500 * (attempt + 1)));
+  }
+  throw last;
 }
 
 let enginePromise = null;
