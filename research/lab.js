@@ -373,8 +373,17 @@ export function mountLab(container, options = {}) {
   async function structureFor(material) {
     if (structureCache.has(material.id)) return structureCache.get(material.id);
     if (!material.structure_url) throw new Error('该记录没有可用的结构文件（CIF 解析未完成）');
-    const response = await fetch(material.structure_url);
-    if (!response.ok) throw new Error('结构文件读取失败（' + response.status + '）');
+    let response = null, lastError = null;
+    for (let attempt = 0; attempt < 4; attempt++) {
+      try {
+        response = await fetch(material.structure_url);
+        if (response.ok) break;
+        lastError = new Error('HTTP ' + response.status);
+      } catch (error) { lastError = error; }
+      response = null;
+      await new Promise(resolve => setTimeout(resolve, 500 * (attempt + 1)));
+    }
+    if (!response || !response.ok) throw new Error('结构文件读取失败：' + (lastError?.message || response?.status));
     const sheet = await response.json();
     structureCache.set(material.id, sheet);
     return sheet;
