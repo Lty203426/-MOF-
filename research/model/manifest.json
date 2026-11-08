@@ -1,0 +1,4816 @@
+{
+ "version": "20261108.3",
+ "engine": "CGCNN (Xie & Grossman, 2018) — 浏览器内 float32 推理，权重 float32 存储",
+ "radius": 8,
+ "max_neighbors": 12,
+ "gaussian_step": 0.2,
+ "gaussian_count": 41,
+ "atom_feature_dim": 92,
+ "atom_embedding": {
+  "file": "atom_init.f32.bin",
+  "shape": [
+   92,
+   92
+  ]
+ },
+ "symbols": [
+  "H",
+  "He",
+  "Li",
+  "Be",
+  "B",
+  "C",
+  "N",
+  "O",
+  "F",
+  "Ne",
+  "Na",
+  "Mg",
+  "Al",
+  "Si",
+  "P",
+  "S",
+  "Cl",
+  "Ar",
+  "K",
+  "Ca",
+  "Sc",
+  "Ti",
+  "V",
+  "Cr",
+  "Mn",
+  "Fe",
+  "Co",
+  "Ni",
+  "Cu",
+  "Zn",
+  "Ga",
+  "Ge",
+  "As",
+  "Se",
+  "Br",
+  "Kr",
+  "Rb",
+  "Sr",
+  "Y",
+  "Zr",
+  "Nb",
+  "Mo",
+  "Tc",
+  "Ru",
+  "Rh",
+  "Pd",
+  "Ag",
+  "Cd",
+  "In",
+  "Sn",
+  "Sb",
+  "Te",
+  "I",
+  "Xe",
+  "Cs",
+  "Ba",
+  "La",
+  "Ce",
+  "Pr",
+  "Nd",
+  "Pm",
+  "Sm",
+  "Eu",
+  "Gd",
+  "Tb",
+  "Dy",
+  "Ho",
+  "Er",
+  "Tm",
+  "Yb",
+  "Lu",
+  "Hf",
+  "Ta",
+  "W",
+  "Re",
+  "Os",
+  "Ir",
+  "Pt",
+  "Au",
+  "Hg",
+  "Tl",
+  "Pb",
+  "Bi",
+  "Po",
+  "At",
+  "Rn",
+  "Fr",
+  "Ra",
+  "Ac",
+  "Th",
+  "Pa",
+  "U",
+  "Np",
+  "Pu"
+ ],
+ "models": [
+  {
+   "id": "gas-SO2",
+   "kind": "gas",
+   "file": "gas-SO2.f32.bin",
+   "bytes": 508164,
+   "args": {
+    "atom_fea_len": 64,
+    "n_conv": 5,
+    "h_fea_len": 128,
+    "n_h": 1
+   },
+   "mean": 5.0954484939575195,
+   "std": 4.001251220703125,
+   "tensors": [
+    {
+     "name": "embedding.weight",
+     "shape": [
+      64,
+      92
+     ],
+     "offset": 0,
+     "count": 5888
+    },
+    {
+     "name": "embedding.bias",
+     "shape": [
+      64
+     ],
+     "offset": 23552,
+     "count": 64
+    },
+    {
+     "name": "convs.0.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 23808,
+     "count": 21632
+    },
+    {
+     "name": "convs.0.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 110336,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 110848,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 111360,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 111872,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 112384,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 112896,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 113152,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 113408,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 113664,
+     "count": 64
+    },
+    {
+     "name": "convs.1.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 113920,
+     "count": 21632
+    },
+    {
+     "name": "convs.1.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 200448,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 200960,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 201472,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 201984,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 202496,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 203008,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 203264,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 203520,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 203776,
+     "count": 64
+    },
+    {
+     "name": "convs.2.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 204032,
+     "count": 21632
+    },
+    {
+     "name": "convs.2.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 290560,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 291072,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 291584,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 292096,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 292608,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 293120,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 293376,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 293632,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 293888,
+     "count": 64
+    },
+    {
+     "name": "convs.3.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 294144,
+     "count": 21632
+    },
+    {
+     "name": "convs.3.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 380672,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 381184,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 381696,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 382208,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 382720,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 383232,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 383488,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 383744,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 384000,
+     "count": 64
+    },
+    {
+     "name": "convs.4.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 384256,
+     "count": 21632
+    },
+    {
+     "name": "convs.4.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 470784,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 471296,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 471808,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 472320,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 472832,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 473344,
+     "count": 64
+    },
+    {
+     "name": "convs.4.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 473600,
+     "count": 64
+    },
+    {
+     "name": "convs.4.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 473856,
+     "count": 64
+    },
+    {
+     "name": "convs.4.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 474112,
+     "count": 64
+    },
+    {
+     "name": "conv_to_fc.weight",
+     "shape": [
+      128,
+      64
+     ],
+     "offset": 474368,
+     "count": 8192
+    },
+    {
+     "name": "conv_to_fc.bias",
+     "shape": [
+      128
+     ],
+     "offset": 507136,
+     "count": 128
+    },
+    {
+     "name": "fc_out.weight",
+     "shape": [
+      1,
+      128
+     ],
+     "offset": 507648,
+     "count": 128
+    },
+    {
+     "name": "fc_out.bias",
+     "shape": [
+      1
+     ],
+     "offset": 508160,
+     "count": 1
+    }
+   ],
+   "source": "model_best.pth.tar",
+   "sha256_16": "4ae157f469be9b36",
+   "gas": "SO2",
+   "label": "SO₂",
+   "name": "二氧化硫",
+   "unit": "训练标签原始尺度（待核验）",
+   "target": "二氧化硫吸附量（训练标签原始尺度）"
+  },
+  {
+   "id": "gas-SF6",
+   "kind": "gas",
+   "file": "gas-SF6.f32.bin",
+   "bytes": 508164,
+   "args": {
+    "atom_fea_len": 64,
+    "n_conv": 5,
+    "h_fea_len": 128,
+    "n_h": 1
+   },
+   "mean": 3.933900833129883,
+   "std": 2.612262010574341,
+   "tensors": [
+    {
+     "name": "embedding.weight",
+     "shape": [
+      64,
+      92
+     ],
+     "offset": 0,
+     "count": 5888
+    },
+    {
+     "name": "embedding.bias",
+     "shape": [
+      64
+     ],
+     "offset": 23552,
+     "count": 64
+    },
+    {
+     "name": "convs.0.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 23808,
+     "count": 21632
+    },
+    {
+     "name": "convs.0.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 110336,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 110848,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 111360,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 111872,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 112384,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 112896,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 113152,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 113408,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 113664,
+     "count": 64
+    },
+    {
+     "name": "convs.1.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 113920,
+     "count": 21632
+    },
+    {
+     "name": "convs.1.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 200448,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 200960,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 201472,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 201984,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 202496,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 203008,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 203264,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 203520,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 203776,
+     "count": 64
+    },
+    {
+     "name": "convs.2.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 204032,
+     "count": 21632
+    },
+    {
+     "name": "convs.2.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 290560,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 291072,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 291584,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 292096,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 292608,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 293120,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 293376,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 293632,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 293888,
+     "count": 64
+    },
+    {
+     "name": "convs.3.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 294144,
+     "count": 21632
+    },
+    {
+     "name": "convs.3.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 380672,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 381184,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 381696,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 382208,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 382720,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 383232,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 383488,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 383744,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 384000,
+     "count": 64
+    },
+    {
+     "name": "convs.4.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 384256,
+     "count": 21632
+    },
+    {
+     "name": "convs.4.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 470784,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 471296,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 471808,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 472320,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 472832,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 473344,
+     "count": 64
+    },
+    {
+     "name": "convs.4.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 473600,
+     "count": 64
+    },
+    {
+     "name": "convs.4.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 473856,
+     "count": 64
+    },
+    {
+     "name": "convs.4.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 474112,
+     "count": 64
+    },
+    {
+     "name": "conv_to_fc.weight",
+     "shape": [
+      128,
+      64
+     ],
+     "offset": 474368,
+     "count": 8192
+    },
+    {
+     "name": "conv_to_fc.bias",
+     "shape": [
+      128
+     ],
+     "offset": 507136,
+     "count": 128
+    },
+    {
+     "name": "fc_out.weight",
+     "shape": [
+      1,
+      128
+     ],
+     "offset": 507648,
+     "count": 128
+    },
+    {
+     "name": "fc_out.bias",
+     "shape": [
+      1
+     ],
+     "offset": 508160,
+     "count": 1
+    }
+   ],
+   "source": "model_SF6.pth.tar",
+   "sha256_16": "6dcea0eb257cee77",
+   "gas": "SF6",
+   "label": "SF₆",
+   "name": "六氟化硫",
+   "unit": "训练标签原始尺度（待核验）",
+   "target": "六氟化硫吸附量（训练标签原始尺度）"
+  },
+  {
+   "id": "gas-C7H8",
+   "kind": "gas",
+   "file": "gas-C7H8.f32.bin",
+   "bytes": 508164,
+   "args": {
+    "atom_fea_len": 64,
+    "n_conv": 5,
+    "h_fea_len": 128,
+    "n_h": 1
+   },
+   "mean": 5.476456642150879,
+   "std": 3.523615837097168,
+   "tensors": [
+    {
+     "name": "embedding.weight",
+     "shape": [
+      64,
+      92
+     ],
+     "offset": 0,
+     "count": 5888
+    },
+    {
+     "name": "embedding.bias",
+     "shape": [
+      64
+     ],
+     "offset": 23552,
+     "count": 64
+    },
+    {
+     "name": "convs.0.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 23808,
+     "count": 21632
+    },
+    {
+     "name": "convs.0.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 110336,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 110848,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 111360,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 111872,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 112384,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 112896,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 113152,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 113408,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 113664,
+     "count": 64
+    },
+    {
+     "name": "convs.1.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 113920,
+     "count": 21632
+    },
+    {
+     "name": "convs.1.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 200448,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 200960,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 201472,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 201984,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 202496,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 203008,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 203264,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 203520,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 203776,
+     "count": 64
+    },
+    {
+     "name": "convs.2.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 204032,
+     "count": 21632
+    },
+    {
+     "name": "convs.2.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 290560,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 291072,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 291584,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 292096,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 292608,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 293120,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 293376,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 293632,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 293888,
+     "count": 64
+    },
+    {
+     "name": "convs.3.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 294144,
+     "count": 21632
+    },
+    {
+     "name": "convs.3.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 380672,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 381184,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 381696,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 382208,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 382720,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 383232,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 383488,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 383744,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 384000,
+     "count": 64
+    },
+    {
+     "name": "convs.4.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 384256,
+     "count": 21632
+    },
+    {
+     "name": "convs.4.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 470784,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 471296,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 471808,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 472320,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 472832,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 473344,
+     "count": 64
+    },
+    {
+     "name": "convs.4.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 473600,
+     "count": 64
+    },
+    {
+     "name": "convs.4.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 473856,
+     "count": 64
+    },
+    {
+     "name": "convs.4.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 474112,
+     "count": 64
+    },
+    {
+     "name": "conv_to_fc.weight",
+     "shape": [
+      128,
+      64
+     ],
+     "offset": 474368,
+     "count": 8192
+    },
+    {
+     "name": "conv_to_fc.bias",
+     "shape": [
+      128
+     ],
+     "offset": 507136,
+     "count": 128
+    },
+    {
+     "name": "fc_out.weight",
+     "shape": [
+      1,
+      128
+     ],
+     "offset": 507648,
+     "count": 128
+    },
+    {
+     "name": "fc_out.bias",
+     "shape": [
+      1
+     ],
+     "offset": 508160,
+     "count": 1
+    }
+   ],
+   "source": "model_c7h8.pth.tar",
+   "sha256_16": "551fa19209dafcd8",
+   "gas": "C7H8",
+   "label": "C₇H₈",
+   "name": "甲苯",
+   "unit": "训练标签原始尺度（待核验）",
+   "target": "甲苯吸附量（训练标签原始尺度）"
+  },
+  {
+   "id": "gas-CH4",
+   "kind": "gas",
+   "file": "gas-CH4.f32.bin",
+   "bytes": 508164,
+   "args": {
+    "atom_fea_len": 64,
+    "n_conv": 5,
+    "h_fea_len": 128,
+    "n_h": 1
+   },
+   "mean": 146.5881805419922,
+   "std": 65.59546661376953,
+   "tensors": [
+    {
+     "name": "embedding.weight",
+     "shape": [
+      64,
+      92
+     ],
+     "offset": 0,
+     "count": 5888
+    },
+    {
+     "name": "embedding.bias",
+     "shape": [
+      64
+     ],
+     "offset": 23552,
+     "count": 64
+    },
+    {
+     "name": "convs.0.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 23808,
+     "count": 21632
+    },
+    {
+     "name": "convs.0.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 110336,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 110848,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 111360,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 111872,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 112384,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 112896,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 113152,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 113408,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 113664,
+     "count": 64
+    },
+    {
+     "name": "convs.1.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 113920,
+     "count": 21632
+    },
+    {
+     "name": "convs.1.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 200448,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 200960,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 201472,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 201984,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 202496,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 203008,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 203264,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 203520,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 203776,
+     "count": 64
+    },
+    {
+     "name": "convs.2.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 204032,
+     "count": 21632
+    },
+    {
+     "name": "convs.2.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 290560,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 291072,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 291584,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 292096,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 292608,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 293120,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 293376,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 293632,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 293888,
+     "count": 64
+    },
+    {
+     "name": "convs.3.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 294144,
+     "count": 21632
+    },
+    {
+     "name": "convs.3.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 380672,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 381184,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 381696,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 382208,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 382720,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 383232,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 383488,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 383744,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 384000,
+     "count": 64
+    },
+    {
+     "name": "convs.4.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 384256,
+     "count": 21632
+    },
+    {
+     "name": "convs.4.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 470784,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 471296,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 471808,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 472320,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 472832,
+     "count": 128
+    },
+    {
+     "name": "convs.4.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 473344,
+     "count": 64
+    },
+    {
+     "name": "convs.4.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 473600,
+     "count": 64
+    },
+    {
+     "name": "convs.4.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 473856,
+     "count": 64
+    },
+    {
+     "name": "convs.4.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 474112,
+     "count": 64
+    },
+    {
+     "name": "conv_to_fc.weight",
+     "shape": [
+      128,
+      64
+     ],
+     "offset": 474368,
+     "count": 8192
+    },
+    {
+     "name": "conv_to_fc.bias",
+     "shape": [
+      128
+     ],
+     "offset": 507136,
+     "count": 128
+    },
+    {
+     "name": "fc_out.weight",
+     "shape": [
+      1,
+      128
+     ],
+     "offset": 507648,
+     "count": 128
+    },
+    {
+     "name": "fc_out.bias",
+     "shape": [
+      1
+     ],
+     "offset": 508160,
+     "count": 1
+    }
+   ],
+   "source": "model_ch4.pth.tar",
+   "sha256_16": "ff432ded58b6ecf3",
+   "gas": "CH4",
+   "label": "CH₄",
+   "name": "甲烷",
+   "unit": "训练标签原始尺度（待核验）",
+   "target": "甲烷吸附量（训练标签原始尺度）"
+  },
+  {
+   "id": "prop-formation-energy-per-atom",
+   "kind": "property",
+   "file": "prop-formation-energy-per-atom.f32.bin",
+   "bytes": 392708,
+   "args": {
+    "atom_fea_len": 64,
+    "n_conv": 4,
+    "h_fea_len": 32,
+    "n_h": 1
+   },
+   "mean": -1.699178719088435,
+   "std": 1.0563029540802564,
+   "tensors": [
+    {
+     "name": "embedding.weight",
+     "shape": [
+      64,
+      92
+     ],
+     "offset": 0,
+     "count": 5888
+    },
+    {
+     "name": "embedding.bias",
+     "shape": [
+      64
+     ],
+     "offset": 23552,
+     "count": 64
+    },
+    {
+     "name": "convs.0.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 23808,
+     "count": 21632
+    },
+    {
+     "name": "convs.0.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 110336,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 110848,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 111360,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 111872,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 112384,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 112896,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 113152,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 113408,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 113664,
+     "count": 64
+    },
+    {
+     "name": "convs.1.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 113920,
+     "count": 21632
+    },
+    {
+     "name": "convs.1.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 200448,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 200960,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 201472,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 201984,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 202496,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 203008,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 203264,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 203520,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 203776,
+     "count": 64
+    },
+    {
+     "name": "convs.2.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 204032,
+     "count": 21632
+    },
+    {
+     "name": "convs.2.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 290560,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 291072,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 291584,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 292096,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 292608,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 293120,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 293376,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 293632,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 293888,
+     "count": 64
+    },
+    {
+     "name": "convs.3.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 294144,
+     "count": 21632
+    },
+    {
+     "name": "convs.3.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 380672,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 381184,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 381696,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 382208,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 382720,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 383232,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 383488,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 383744,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 384000,
+     "count": 64
+    },
+    {
+     "name": "conv_to_fc.weight",
+     "shape": [
+      32,
+      64
+     ],
+     "offset": 384256,
+     "count": 2048
+    },
+    {
+     "name": "conv_to_fc.bias",
+     "shape": [
+      32
+     ],
+     "offset": 392448,
+     "count": 32
+    },
+    {
+     "name": "fc_out.weight",
+     "shape": [
+      1,
+      32
+     ],
+     "offset": 392576,
+     "count": 32
+    },
+    {
+     "name": "fc_out.bias",
+     "shape": [
+      1
+     ],
+     "offset": 392704,
+     "count": 1
+    }
+   ],
+   "source": "formation-energy-per-atom.pth.tar",
+   "sha256_16": "e2f8bb910744f2c2",
+   "key": "formation-energy-per-atom",
+   "label": "形成能",
+   "unit": "eV/atom",
+   "name": "形成能",
+   "target": "形成能"
+  },
+  {
+   "id": "prop-final-energy-per-atom",
+   "kind": "property",
+   "file": "prop-final-energy-per-atom.f32.bin",
+   "bytes": 392708,
+   "args": {
+    "atom_fea_len": 64,
+    "n_conv": 4,
+    "h_fea_len": 32,
+    "n_h": 1
+   },
+   "mean": -6.121046893835068,
+   "std": 1.6898854513043429,
+   "tensors": [
+    {
+     "name": "embedding.weight",
+     "shape": [
+      64,
+      92
+     ],
+     "offset": 0,
+     "count": 5888
+    },
+    {
+     "name": "embedding.bias",
+     "shape": [
+      64
+     ],
+     "offset": 23552,
+     "count": 64
+    },
+    {
+     "name": "convs.0.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 23808,
+     "count": 21632
+    },
+    {
+     "name": "convs.0.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 110336,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 110848,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 111360,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 111872,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 112384,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 112896,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 113152,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 113408,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 113664,
+     "count": 64
+    },
+    {
+     "name": "convs.1.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 113920,
+     "count": 21632
+    },
+    {
+     "name": "convs.1.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 200448,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 200960,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 201472,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 201984,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 202496,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 203008,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 203264,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 203520,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 203776,
+     "count": 64
+    },
+    {
+     "name": "convs.2.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 204032,
+     "count": 21632
+    },
+    {
+     "name": "convs.2.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 290560,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 291072,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 291584,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 292096,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 292608,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 293120,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 293376,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 293632,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 293888,
+     "count": 64
+    },
+    {
+     "name": "convs.3.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 294144,
+     "count": 21632
+    },
+    {
+     "name": "convs.3.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 380672,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 381184,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 381696,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 382208,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 382720,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 383232,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 383488,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 383744,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 384000,
+     "count": 64
+    },
+    {
+     "name": "conv_to_fc.weight",
+     "shape": [
+      32,
+      64
+     ],
+     "offset": 384256,
+     "count": 2048
+    },
+    {
+     "name": "conv_to_fc.bias",
+     "shape": [
+      32
+     ],
+     "offset": 392448,
+     "count": 32
+    },
+    {
+     "name": "fc_out.weight",
+     "shape": [
+      1,
+      32
+     ],
+     "offset": 392576,
+     "count": 32
+    },
+    {
+     "name": "fc_out.bias",
+     "shape": [
+      1
+     ],
+     "offset": 392704,
+     "count": 1
+    }
+   ],
+   "source": "final-energy-per-atom.pth.tar",
+   "sha256_16": "1afe9260a0b7bd01",
+   "key": "final-energy-per-atom",
+   "label": "绝对能量",
+   "unit": "eV/atom",
+   "name": "绝对能量",
+   "target": "绝对能量"
+  },
+  {
+   "id": "prop-band-gap",
+   "kind": "property",
+   "file": "prop-band-gap.f32.bin",
+   "bytes": 392708,
+   "args": {
+    "atom_fea_len": 64,
+    "n_conv": 4,
+    "h_fea_len": 32,
+    "n_h": 1
+   },
+   "mean": 2.353832203000784,
+   "std": 1.4802391239920374,
+   "tensors": [
+    {
+     "name": "embedding.weight",
+     "shape": [
+      64,
+      92
+     ],
+     "offset": 0,
+     "count": 5888
+    },
+    {
+     "name": "embedding.bias",
+     "shape": [
+      64
+     ],
+     "offset": 23552,
+     "count": 64
+    },
+    {
+     "name": "convs.0.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 23808,
+     "count": 21632
+    },
+    {
+     "name": "convs.0.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 110336,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 110848,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 111360,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 111872,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 112384,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 112896,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 113152,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 113408,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 113664,
+     "count": 64
+    },
+    {
+     "name": "convs.1.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 113920,
+     "count": 21632
+    },
+    {
+     "name": "convs.1.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 200448,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 200960,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 201472,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 201984,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 202496,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 203008,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 203264,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 203520,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 203776,
+     "count": 64
+    },
+    {
+     "name": "convs.2.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 204032,
+     "count": 21632
+    },
+    {
+     "name": "convs.2.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 290560,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 291072,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 291584,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 292096,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 292608,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 293120,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 293376,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 293632,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 293888,
+     "count": 64
+    },
+    {
+     "name": "convs.3.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 294144,
+     "count": 21632
+    },
+    {
+     "name": "convs.3.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 380672,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 381184,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 381696,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 382208,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 382720,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 383232,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 383488,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 383744,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 384000,
+     "count": 64
+    },
+    {
+     "name": "conv_to_fc.weight",
+     "shape": [
+      32,
+      64
+     ],
+     "offset": 384256,
+     "count": 2048
+    },
+    {
+     "name": "conv_to_fc.bias",
+     "shape": [
+      32
+     ],
+     "offset": 392448,
+     "count": 32
+    },
+    {
+     "name": "fc_out.weight",
+     "shape": [
+      1,
+      32
+     ],
+     "offset": 392576,
+     "count": 32
+    },
+    {
+     "name": "fc_out.bias",
+     "shape": [
+      1
+     ],
+     "offset": 392704,
+     "count": 1
+    }
+   ],
+   "source": "band-gap.pth.tar",
+   "sha256_16": "d269775b9be0995c",
+   "key": "band-gap",
+   "label": "带隙",
+   "unit": "eV",
+   "name": "带隙",
+   "target": "带隙"
+  },
+  {
+   "id": "prop-efermi",
+   "kind": "property",
+   "file": "prop-efermi.f32.bin",
+   "bytes": 392708,
+   "args": {
+    "atom_fea_len": 64,
+    "n_conv": 4,
+    "h_fea_len": 32,
+    "n_h": 1
+   },
+   "mean": 2.743037599244155,
+   "std": 2.5840009026460704,
+   "tensors": [
+    {
+     "name": "embedding.weight",
+     "shape": [
+      64,
+      92
+     ],
+     "offset": 0,
+     "count": 5888
+    },
+    {
+     "name": "embedding.bias",
+     "shape": [
+      64
+     ],
+     "offset": 23552,
+     "count": 64
+    },
+    {
+     "name": "convs.0.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 23808,
+     "count": 21632
+    },
+    {
+     "name": "convs.0.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 110336,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 110848,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 111360,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 111872,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 112384,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 112896,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 113152,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 113408,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 113664,
+     "count": 64
+    },
+    {
+     "name": "convs.1.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 113920,
+     "count": 21632
+    },
+    {
+     "name": "convs.1.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 200448,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 200960,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 201472,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 201984,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 202496,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 203008,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 203264,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 203520,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 203776,
+     "count": 64
+    },
+    {
+     "name": "convs.2.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 204032,
+     "count": 21632
+    },
+    {
+     "name": "convs.2.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 290560,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 291072,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 291584,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 292096,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 292608,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 293120,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 293376,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 293632,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 293888,
+     "count": 64
+    },
+    {
+     "name": "convs.3.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 294144,
+     "count": 21632
+    },
+    {
+     "name": "convs.3.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 380672,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 381184,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 381696,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 382208,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 382720,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 383232,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 383488,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 383744,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 384000,
+     "count": 64
+    },
+    {
+     "name": "conv_to_fc.weight",
+     "shape": [
+      32,
+      64
+     ],
+     "offset": 384256,
+     "count": 2048
+    },
+    {
+     "name": "conv_to_fc.bias",
+     "shape": [
+      32
+     ],
+     "offset": 392448,
+     "count": 32
+    },
+    {
+     "name": "fc_out.weight",
+     "shape": [
+      1,
+      32
+     ],
+     "offset": 392576,
+     "count": 32
+    },
+    {
+     "name": "fc_out.bias",
+     "shape": [
+      1
+     ],
+     "offset": 392704,
+     "count": 1
+    }
+   ],
+   "source": "efermi.pth.tar",
+   "sha256_16": "5ed4ba15b5bd3e04",
+   "key": "efermi",
+   "label": "费米能级",
+   "unit": "eV/atom",
+   "name": "费米能级",
+   "target": "费米能级"
+  },
+  {
+   "id": "prop-bulk-moduli",
+   "kind": "property",
+   "file": "prop-bulk-moduli.f32.bin",
+   "bytes": 392708,
+   "args": {
+    "atom_fea_len": 64,
+    "n_conv": 4,
+    "h_fea_len": 32,
+    "n_h": 1
+   },
+   "mean": 1.9753183792829514,
+   "std": 0.3341568293238605,
+   "tensors": [
+    {
+     "name": "embedding.weight",
+     "shape": [
+      64,
+      92
+     ],
+     "offset": 0,
+     "count": 5888
+    },
+    {
+     "name": "embedding.bias",
+     "shape": [
+      64
+     ],
+     "offset": 23552,
+     "count": 64
+    },
+    {
+     "name": "convs.0.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 23808,
+     "count": 21632
+    },
+    {
+     "name": "convs.0.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 110336,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 110848,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 111360,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 111872,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 112384,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 112896,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 113152,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 113408,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 113664,
+     "count": 64
+    },
+    {
+     "name": "convs.1.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 113920,
+     "count": 21632
+    },
+    {
+     "name": "convs.1.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 200448,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 200960,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 201472,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 201984,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 202496,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 203008,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 203264,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 203520,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 203776,
+     "count": 64
+    },
+    {
+     "name": "convs.2.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 204032,
+     "count": 21632
+    },
+    {
+     "name": "convs.2.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 290560,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 291072,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 291584,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 292096,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 292608,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 293120,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 293376,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 293632,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 293888,
+     "count": 64
+    },
+    {
+     "name": "convs.3.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 294144,
+     "count": 21632
+    },
+    {
+     "name": "convs.3.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 380672,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 381184,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 381696,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 382208,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 382720,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 383232,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 383488,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 383744,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 384000,
+     "count": 64
+    },
+    {
+     "name": "conv_to_fc.weight",
+     "shape": [
+      32,
+      64
+     ],
+     "offset": 384256,
+     "count": 2048
+    },
+    {
+     "name": "conv_to_fc.bias",
+     "shape": [
+      32
+     ],
+     "offset": 392448,
+     "count": 32
+    },
+    {
+     "name": "fc_out.weight",
+     "shape": [
+      1,
+      32
+     ],
+     "offset": 392576,
+     "count": 32
+    },
+    {
+     "name": "fc_out.bias",
+     "shape": [
+      1
+     ],
+     "offset": 392704,
+     "count": 1
+    }
+   ],
+   "source": "bulk-moduli.pth.tar",
+   "sha256_16": "0a3f66b9a0ee6ace",
+   "key": "bulk-moduli",
+   "label": "体积模量",
+   "unit": "log(GPa)",
+   "name": "体积模量",
+   "target": "体积模量"
+  },
+  {
+   "id": "prop-shear-moduli",
+   "kind": "property",
+   "file": "prop-shear-moduli.f32.bin",
+   "bytes": 392708,
+   "args": {
+    "atom_fea_len": 64,
+    "n_conv": 4,
+    "h_fea_len": 32,
+    "n_h": 1
+   },
+   "mean": 1.6305109606981278,
+   "std": 0.35881382535392076,
+   "tensors": [
+    {
+     "name": "embedding.weight",
+     "shape": [
+      64,
+      92
+     ],
+     "offset": 0,
+     "count": 5888
+    },
+    {
+     "name": "embedding.bias",
+     "shape": [
+      64
+     ],
+     "offset": 23552,
+     "count": 64
+    },
+    {
+     "name": "convs.0.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 23808,
+     "count": 21632
+    },
+    {
+     "name": "convs.0.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 110336,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 110848,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 111360,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 111872,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 112384,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 112896,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 113152,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 113408,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 113664,
+     "count": 64
+    },
+    {
+     "name": "convs.1.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 113920,
+     "count": 21632
+    },
+    {
+     "name": "convs.1.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 200448,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 200960,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 201472,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 201984,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 202496,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 203008,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 203264,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 203520,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 203776,
+     "count": 64
+    },
+    {
+     "name": "convs.2.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 204032,
+     "count": 21632
+    },
+    {
+     "name": "convs.2.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 290560,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 291072,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 291584,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 292096,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 292608,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 293120,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 293376,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 293632,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 293888,
+     "count": 64
+    },
+    {
+     "name": "convs.3.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 294144,
+     "count": 21632
+    },
+    {
+     "name": "convs.3.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 380672,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 381184,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 381696,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 382208,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 382720,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 383232,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 383488,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 383744,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 384000,
+     "count": 64
+    },
+    {
+     "name": "conv_to_fc.weight",
+     "shape": [
+      32,
+      64
+     ],
+     "offset": 384256,
+     "count": 2048
+    },
+    {
+     "name": "conv_to_fc.bias",
+     "shape": [
+      32
+     ],
+     "offset": 392448,
+     "count": 32
+    },
+    {
+     "name": "fc_out.weight",
+     "shape": [
+      1,
+      32
+     ],
+     "offset": 392576,
+     "count": 32
+    },
+    {
+     "name": "fc_out.bias",
+     "shape": [
+      1
+     ],
+     "offset": 392704,
+     "count": 1
+    }
+   ],
+   "source": "shear-moduli.pth.tar",
+   "sha256_16": "34173bc59a0a8f9f",
+   "key": "shear-moduli",
+   "label": "剪切模量",
+   "unit": "log(GPa)",
+   "name": "剪切模量",
+   "target": "剪切模量"
+  },
+  {
+   "id": "prop-poisson-ratio",
+   "kind": "property",
+   "file": "prop-poisson-ratio.f32.bin",
+   "bytes": 392708,
+   "args": {
+    "atom_fea_len": 64,
+    "n_conv": 4,
+    "h_fea_len": 32,
+    "n_h": 1
+   },
+   "mean": 0.28208000062406063,
+   "std": 0.06027719603792752,
+   "tensors": [
+    {
+     "name": "embedding.weight",
+     "shape": [
+      64,
+      92
+     ],
+     "offset": 0,
+     "count": 5888
+    },
+    {
+     "name": "embedding.bias",
+     "shape": [
+      64
+     ],
+     "offset": 23552,
+     "count": 64
+    },
+    {
+     "name": "convs.0.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 23808,
+     "count": 21632
+    },
+    {
+     "name": "convs.0.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 110336,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 110848,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 111360,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 111872,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 112384,
+     "count": 128
+    },
+    {
+     "name": "convs.0.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 112896,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 113152,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 113408,
+     "count": 64
+    },
+    {
+     "name": "convs.0.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 113664,
+     "count": 64
+    },
+    {
+     "name": "convs.1.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 113920,
+     "count": 21632
+    },
+    {
+     "name": "convs.1.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 200448,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 200960,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 201472,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 201984,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 202496,
+     "count": 128
+    },
+    {
+     "name": "convs.1.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 203008,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 203264,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 203520,
+     "count": 64
+    },
+    {
+     "name": "convs.1.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 203776,
+     "count": 64
+    },
+    {
+     "name": "convs.2.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 204032,
+     "count": 21632
+    },
+    {
+     "name": "convs.2.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 290560,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 291072,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 291584,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 292096,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 292608,
+     "count": 128
+    },
+    {
+     "name": "convs.2.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 293120,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 293376,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 293632,
+     "count": 64
+    },
+    {
+     "name": "convs.2.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 293888,
+     "count": 64
+    },
+    {
+     "name": "convs.3.fc_full.weight",
+     "shape": [
+      128,
+      169
+     ],
+     "offset": 294144,
+     "count": 21632
+    },
+    {
+     "name": "convs.3.fc_full.bias",
+     "shape": [
+      128
+     ],
+     "offset": 380672,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.weight",
+     "shape": [
+      128
+     ],
+     "offset": 381184,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.bias",
+     "shape": [
+      128
+     ],
+     "offset": 381696,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_mean",
+     "shape": [
+      128
+     ],
+     "offset": 382208,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn1.running_var",
+     "shape": [
+      128
+     ],
+     "offset": 382720,
+     "count": 128
+    },
+    {
+     "name": "convs.3.bn2.weight",
+     "shape": [
+      64
+     ],
+     "offset": 383232,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.bias",
+     "shape": [
+      64
+     ],
+     "offset": 383488,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_mean",
+     "shape": [
+      64
+     ],
+     "offset": 383744,
+     "count": 64
+    },
+    {
+     "name": "convs.3.bn2.running_var",
+     "shape": [
+      64
+     ],
+     "offset": 384000,
+     "count": 64
+    },
+    {
+     "name": "conv_to_fc.weight",
+     "shape": [
+      32,
+      64
+     ],
+     "offset": 384256,
+     "count": 2048
+    },
+    {
+     "name": "conv_to_fc.bias",
+     "shape": [
+      32
+     ],
+     "offset": 392448,
+     "count": 32
+    },
+    {
+     "name": "fc_out.weight",
+     "shape": [
+      1,
+      32
+     ],
+     "offset": 392576,
+     "count": 32
+    },
+    {
+     "name": "fc_out.bias",
+     "shape": [
+      1
+     ],
+     "offset": 392704,
+     "count": 1
+    }
+   ],
+   "source": "poisson-ratio.pth.tar",
+   "sha256_16": "8d152338550b49ff",
+   "key": "poisson-ratio",
+   "label": "泊松比",
+   "unit": "—",
+   "name": "泊松比",
+   "target": "泊松比"
+  }
+ ]
+}
