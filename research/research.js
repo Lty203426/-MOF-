@@ -54,6 +54,20 @@ async function findService() {
 // 必须同步打开新窗口：先 await 探测再 window.open 会被浏览器当成非用户操作而拦截弹窗。
 // 地址用已保存值（默认 8001），探测只在后台用来更正默认端口，不阻塞打开。
 function openCompute(page='predict', material=null) {
+  // 公网 HTTPS 页面无法访问本机端口，直接跳转会得到一个打不开的标签页。
+  // 评委扫码使用时改为就地展开预置模型输出，避免出现"打不开"的观感。
+  const blocked = location.protocol === 'https:' && !['localhost','127.0.0.1','[::1]'].includes(location.hostname);
+  if (blocked) {
+    const box = document.getElementById('demo-predictions');
+    if (box) {
+      box.scrollIntoView({behavior:'smooth', block:'start'});
+      box.style.outline = '2px solid var(--accent, #5FD0A0)';
+      box.style.outlineOffset = '6px';
+      setTimeout(()=>{ box.style.outline = 'none'; }, 2600);
+    }
+    notice('在线版展示的是预置模型输出（由本机计算服务实际推理得到）。实时提交新结构需在汇报电脑上运行「启动AI实验室.cmd」。');
+    return;
+  }
   let base;
   try { base = validateService(storedService()); } catch (error) { notice(error.message); return; }
   const url = new URL(base + '/ai/');
@@ -159,13 +173,13 @@ function models() {
   $('#models-compute').onclick=()=>openCompute('models');
 }
 function service(page='predict') {
-  $('#content').innerHTML=`<div class="eyebrow">CGCNN · 本地 CPU / 已部署的 HTTPS 服务</div><h1>AI 计算服务</h1><p>当前网站可独立浏览材料和数据；模型推理、批量筛选、账户与预测历史由计算服务提供。</p><p id="service-status" class="caption" role="status">正在检测本机计算服务…</p><label for="service-url">计算服务地址</label><form id="service-form" class="service-form"><input id="service-url" type="url" required value="${esc(storedService())}" placeholder="http://127.0.0.1:8001"><button type="submit">保存地址</button></form><div class="service-actions"><button id="launch-predict">气体预测 ↗</button><button id="launch-properties">材料性质 ↗</button><button id="launch-screening">批量筛选 ↗</button><button id="launch-history">预测历史 ↗</button></div><ol class="steps"><li>在桌面「MOF-Studio_交互升级_试剂瓶搅拌滴定」文件夹运行「启动AI实验室.cmd」。</li><li>使用启动后显示的实际地址。本机默认从 8001 端口启动，端口占用时自动选择下一可用端口；本页会自动探测 8001–8020。</li><li>在计算工作台登录，选择结构与模型后提交；实验快照与结果关联保存在计算服务中。</li></ol><p class="warning">GitHub Pages 不运行 Python / PyTorch。此页面不会在计算服务未启动时显示预测结果。HTTPS 网页通过新标签打开本机服务，不嵌入不安全的 HTTP 计算页面。</p><div id="demo-predictions" class="table-preview"><p class="caption">正在读取预置模型输出…</p></div><p class="source-note">使用远程 HTTPS 服务时，材料上传与实验同步发生在该服务内；保存地址不会自动上传当前实验记录。</p>`;
+  $('#content').innerHTML=`<div class="eyebrow">CGCNN · 本地 CPU / 已部署的 HTTPS 服务</div><h1>AI 计算服务</h1><p>当前网站可独立浏览材料和数据；模型推理、批量筛选、账户与预测历史由计算服务提供。</p><p id="service-status" class="caption" role="status">正在检测本机计算服务…</p><label for="service-url">计算服务地址</label><form id="service-form" class="service-form"><input id="service-url" type="url" required value="${esc(storedService())}" placeholder="http://127.0.0.1:8001"><button type="submit">保存地址</button></form><div class="service-actions"><button id="launch-predict">气体预测 ↗</button><button id="launch-properties">材料性质 ↗</button><button id="launch-screening">批量筛选 ↗</button><button id="launch-history">预测历史 ↗</button></div><ol class="steps"><li>在桌面「MOF-Studio_交互升级_试剂瓶搅拌滴定」文件夹运行「启动AI实验室.cmd」。</li><li>使用启动后显示的实际地址。本机默认从 8001 端口启动，端口占用时自动选择下一可用端口；本页会自动探测 8001–8020。</li><li>在计算工作台登录，选择结构与模型后提交；实验快照与结果关联保存在计算服务中。</li></ol><p class="warning">在线版本以浏览与展示为主：点击上方按钮会直接跳到下方的预置模型输出。实时提交新结构需要在本机运行计算服务（GitHub Pages 不运行 Python / PyTorch），这一点在页面上已说明。</p><div id="demo-predictions" class="table-preview"><p class="caption">正在读取预置模型输出…</p></div><p class="source-note">使用远程 HTTPS 服务时，材料上传与实验同步发生在该服务内；保存地址不会自动上传当前实验记录。</p>`;
   $('#service-form').onsubmit=event=>{event.preventDefault();try{const value=validateService($('#service-url').value);localStorage.setItem(serviceKey,value);$('#service-url').value=value;notice('计算服务地址已保存');}catch(error){notice(error.message);}};
   findService().then(base=>{
     const el=$('#service-status');
     if(!el)return;
     if(base){el.textContent='✓ 已检测到本机计算服务：'+base;$('#service-url').value=base;try{localStorage.setItem(serviceKey,base);}catch{}}
-    else if(location.protocol==='https:'){el.textContent='ℹ 公网 HTTPS 页面无法探测本机端口（浏览器安全策略），这属正常现象。请先在本机运行「启动AI实验室.cmd」，再点下方按钮，会直接打开本机计算工作台（默认端口 8001）。';}
+    else if(location.protocol==='https:'){el.textContent='ℹ 当前为在线版本：可直接查看下方预置模型输出。若需实时推理，请在本机运行「启动AI实验室.cmd」后，打开本机服务地址使用。';}
     else{el.textContent='✗ 未检测到本机计算服务（已扫描 8001–8020 端口）。请先运行「启动AI实验室.cmd」。';}
   });
   for(const [button,target] of [['predict','predict'],['properties','properties'],['screening','screening'],['history','history']])$('#launch-'+button).onclick=()=>openCompute(target);
@@ -181,7 +195,7 @@ async function loadDemoPredictions(){
     if(!mats.length)throw new Error('空');
     const gases=mats[0].gas||[], props=mats[0].properties||[];
     const cell=v=>Number(v).toLocaleString('zh-CN',{maximumSignificantDigits:5});
-    box.innerHTML=`<h2>预置模型输出（离线可见）</h2>
+    box.innerHTML=`<h2>预置模型输出（扫码即可查看，无需安装）</h2>
       <p class="caption">${esc(data.note||'')} 生成于 ${esc(data.generated||'')}，引擎 ${esc(data.engine||'')}；${mats.length} 个结构 × ${gases.length} 个气体模型、${props.length} 项材料性质。</p>
       <h3>气体吸附相关预测</h3>
       <div class="table-scroll"><table><thead><tr><th>结构</th>${gases.map(g=>`<th>${esc(g.label)}</th>`).join('')}</tr></thead><tbody>${mats.map(m=>`<tr><td>${esc(m.name)}<small>${esc(m.formula||'')}${m.atoms?' · '+m.atoms+' 原子':''}</small></td>${(m.gas||[]).map(g=>`<td>${cell(g.value)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
