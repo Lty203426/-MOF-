@@ -21,18 +21,32 @@ function sigmoid(x) {
 
 const symbolToZ = new Map();
 
+/* 网络自动重试：公网访问偶发连接重置时，单次抖动不会导致预测失败 */
+async function fetchRetry(url, options, tries = 4) {
+  let last;
+  for (let attempt = 0; attempt < tries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+      if (response.ok || (response.status >= 400 && response.status < 500 && response.status !== 408)) return response;
+      last = new Error('HTTP ' + response.status);
+    } catch (error) { last = error; }
+    await new Promise(resolve => setTimeout(resolve, 500 * (attempt + 1)));
+  }
+  throw last;
+}
+
 export class CgcnnEngine {
   constructor(manifest, baseUrl, fetcher) {
     this.manifest = manifest;
     this.base = baseUrl;
-    this.fetcher = fetcher || ((...args) => fetch(...args));
+    this.fetcher = fetcher || ((...args) => fetchRetry(...args));
     this.embedding = null;
     this.cache = new Map();
     manifest.symbols.forEach((symbol, index) => symbolToZ.set(symbol, index + 1));
   }
 
   static async load(baseUrl = './model/', options = {}) {
-    const fetcher = options.fetch || ((...args) => fetch(...args));
+    const fetcher = options.fetch || ((...args) => fetchRetry(...args));
     const response = await fetcher(baseUrl + 'manifest.json', { cache: 'force-cache' });
     if (!response.ok) throw new Error('模型清单读取失败（' + response.status + '）');
     return new CgcnnEngine(await response.json(), baseUrl, fetcher);
