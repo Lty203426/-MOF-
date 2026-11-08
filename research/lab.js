@@ -229,7 +229,7 @@ export function mountLab(container, options = {}) {
         <ul>
           <li><b>4 个气体模型</b>：SO₂、SF₆、C₇H₈、CH₄（CGCNN 回归）</li>
           <li><b>7 个性质模型</b>：形成能、绝对能量、带隙、费米能级、体积模量、剪切模量、泊松比</li>
-          <li><b>5,867 条公共结构</b>：直接搜索材料名或化学式即可预测</li>
+          <li><b>${(catalog?.materials?.length || 0).toLocaleString()} 条公共结构</b>：直接搜索材料名或化学式即可预测</li>
         </ul>
         <p class="lab-fine">权重来自项目原始 PyTorch checkpoint，逐层等价复现在浏览器中执行；同一结构的结果与桌面版计算服务一致（差异 &lt; 1e-5）。</p>
       </div>
