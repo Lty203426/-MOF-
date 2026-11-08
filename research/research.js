@@ -1,4 +1,5 @@
 import { createScene } from './scene.js';
+import { mountLab } from './lab.js';
 
 const $ = selector => document.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -51,35 +52,13 @@ async function findService() {
   }
   return null;
 }
-// 必须同步打开新窗口：先 await 探测再 window.open 会被浏览器当成非用户操作而拦截弹窗。
-// 地址用已保存值（默认 8001），探测只在后台用来更正默认端口，不阻塞打开。
-function openCompute(page='predict', material=null) {
-  // 公网 HTTPS 页面无法访问本机端口，直接跳转会得到一个打不开的标签页。
-  // 评委扫码使用时改为就地展开预置模型输出，避免出现"打不开"的观感。
-  const blocked = location.protocol === 'https:' && !['localhost','127.0.0.1','[::1]'].includes(location.hostname);
-  if (blocked) {
-    const box = document.getElementById('demo-predictions');
-    if (box) {
-      box.scrollIntoView({behavior:'smooth', block:'start'});
-      box.style.outline = '2px solid var(--accent, #5FD0A0)';
-      box.style.outlineOffset = '6px';
-      setTimeout(()=>{ box.style.outline = 'none'; }, 2600);
-    }
-    notice('在线版展示的是预置模型输出（由本机计算服务实际推理得到）。实时提交新结构需在汇报电脑上运行「启动AI实验室.cmd」。');
-    return;
-  }
-  let base;
-  try { base = validateService(storedService()); } catch (error) { notice(error.message); return; }
-  const url = new URL(base + '/ai/');
-  url.searchParams.set('page',page);
-  if (material) url.searchParams.set('material',material);
-  window.open(url.href, '_blank', 'noopener,noreferrer');
-  notice('正在打开计算服务：' + base + '（若页面打不开，请先运行「启动AI实验室.cmd」）');
-  findService().then(found => {
-    if (!found || found === base) return;
-    try { localStorage.setItem(serviceKey, found); } catch {}
-    notice('检测到本机服务在 ' + found + '，已记为默认地址');
-  }).catch(() => {});
+// 统一入口：不再跳转本机服务、不再探测端口。
+// AI 实验室直接在页面内用浏览器跑真实 CGCNN 模型，换任何电脑打开都能用。
+let pendingMaterial = null;
+function openCompute(page = 'predict', material = null) {
+  pendingMaterial = material || pendingMaterial;
+  if (state.page === 'predict' && document.getElementById('lab-root')) { service(); return; }
+  navigate('predict');
 }
 function pagination(total) {
   return `<div class="pagination"><button id="previous" ${state.offset===0?'disabled':''}>上一页</button><span>${total?state.offset+1:0}–${Math.min(state.offset+size,total)} / ${total.toLocaleString()}</span><button id="next" ${state.offset+size>=total?'disabled':''}>下一页</button></div>`;
@@ -172,77 +151,11 @@ function models() {
   $('#content').innerHTML=`<h1>模型清单</h1><p>17 份原始权重：4 个气体模型与 7 个性质模型已接入本地真实推理，其余 6 份保留原件待核验。</p><p class="warning">气体输出使用待核验的训练标签原始尺度；模量为 log(GPa)。费米能级单位沿用随附文档并待核验。性质模型来源为 Materials Project / CGCNN，MOF 适用域未验证。</p><div class="table-scroll"><table><thead><tr><th>原始文件</th><th>目标</th><th>状态</th><th>SHA-256</th></tr></thead><tbody>${state.catalog.models.map(m=>`<tr><td class="filename">${esc(m.path)}</td><td>${esc(m.target||'待核验')}</td><td><span class="badge ${m.enabled?'':'pending'}">${m.enabled?'计算服务已接入':'待核验'}</span><small>${esc(m.note)}</small></td><td class="filename"><code>${esc(m.sha256)}</code></td></tr>`).join('')}</tbody></table></div><p class="source-note">模型权重原件保存在本地完整工程。网站只展示来源和接入状态，不在浏览器中伪造模型输出。</p><button id="models-compute">打开模型计算</button>`;
   $('#models-compute').onclick=()=>openCompute('models');
 }
-function service(page='predict') {
-  $('#content').innerHTML=`<div class="eyebrow">CGCNN · 本地 CPU / 已部署的 HTTPS 服务</div><h1>AI 计算服务</h1><p>当前网站可独立浏览材料和数据；模型推理、批量筛选、账户与预测历史由计算服务提供。</p><p id="service-status" class="caption" role="status">正在检测本机计算服务…</p><label for="service-url">计算服务地址</label><form id="service-form" class="service-form"><input id="service-url" type="url" required value="${esc(storedService())}" placeholder="http://127.0.0.1:8001"><button type="submit">保存地址</button></form><div class="service-actions"><button id="launch-predict">气体预测 ↗</button><button id="launch-properties">材料性质 ↗</button><button id="launch-screening">批量筛选 ↗</button><button id="launch-history">预测历史 ↗</button></div><ol class="steps"><li>在桌面「MOF-Studio_交互升级_试剂瓶搅拌滴定」文件夹运行「启动AI实验室.cmd」。</li><li>使用启动后显示的实际地址。本机默认从 8001 端口启动，端口占用时自动选择下一可用端口；本页会自动探测 8001–8020。</li><li>在计算工作台登录，选择结构与模型后提交；实验快照与结果关联保存在计算服务中。</li></ol><p class="warning">在线版本以浏览与展示为主：点击上方按钮会直接跳到下方的预置模型输出。实时提交新结构需要在本机运行计算服务（GitHub Pages 不运行 Python / PyTorch），这一点在页面上已说明。</p><div id="demo-predictions" class="table-preview"><p class="caption">正在读取预置模型输出…</p></div><p class="source-note">使用远程 HTTPS 服务时，材料上传与实验同步发生在该服务内；保存地址不会自动上传当前实验记录。</p>`;
-  $('#service-form').onsubmit=event=>{event.preventDefault();try{const value=validateService($('#service-url').value);localStorage.setItem(serviceKey,value);$('#service-url').value=value;notice('计算服务地址已保存');}catch(error){notice(error.message);}};
-  findService().then(base=>{
-    const el=$('#service-status');
-    if(!el)return;
-    if(base){el.textContent='✓ 已检测到本机计算服务：'+base;$('#service-url').value=base;try{localStorage.setItem(serviceKey,base);}catch{}}
-    else if(location.protocol==='https:'){el.textContent='ℹ 当前为在线版本：可直接查看下方预置模型输出。若需实时推理，请在本机运行「启动AI实验室.cmd」后，打开本机服务地址使用。';}
-    else{el.textContent='✗ 未检测到本机计算服务（已扫描 8001–8020 端口）。请先运行「启动AI实验室.cmd」。';}
-  });
-  for(const [button,target] of [['predict','predict'],['properties','properties'],['screening','screening'],['history','history']])$('#launch-'+button).onclick=()=>openCompute(target);
-  loadDemoPredictions();
+function service() {
+  const material = pendingMaterial; pendingMaterial = null;
+  $('#content').innerHTML = '<div id="lab-root"></div>';
+  mountLab($('#lab-root'), { catalog: state.catalog, notice, materialId: material });
 }
-// 预置模型输出：本机真实推理结果静态化，任何电脑或手机打开都能自己选结构看数值（不伪造、不现场计算）。
-async function loadDemoPredictions(){
-  const box=$('#demo-predictions');
-  if(!box)return;
-  try{
-    const data=await readJSON('demo-predictions.json');
-    const mats=(data.materials||[]).filter(m=>(m.gas||[]).length&&(m.properties||[]).length);
-    if(!mats.length)throw new Error('空');
-    const gasLabels=mats[0].gas.map(g=>g.label);
-    const propDefs=mats[0].properties.map(p=>({label:p.label,unit:p.unit||''}));
-    const cell=v=>Number(v).toLocaleString('zh-CN',{maximumSignificantDigits:5});
-    const selStyle='padding:8px 10px;border-radius:8px;border:1px solid rgba(127,127,127,.35);background:transparent;color:inherit;font-size:14px';
-    box.innerHTML=`<h2>在线体验：选一个结构，看它的预测值</h2>
-      <p class="caption">${esc(data.note||'')} 生成于 ${esc(data.generated||'')}，引擎 ${esc(data.engine||'')}。已预置 ${mats.length} 个结构的真实推理结果，切换即可查看，无需安装任何软件。</p>
-      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin:14px 0 4px">
-        <label style="display:flex;flex-direction:column;gap:6px;flex:1 1 260px;font-size:13px">选择结构
-          <select id="demo-material" style="${selStyle}">${mats.map((m,i)=>`<option value="${i}">${esc(m.name)}${m.formula?' · '+esc(m.formula):''}</option>`).join('')}</select></label>
-        <label style="display:flex;flex-direction:column;gap:6px;flex:0 1 170px;font-size:13px">排序依据
-          <select id="demo-sort" style="${selStyle}">${gasLabels.map((l,i)=>`<option value="${i}">${esc(l)}</option>`).join('')}</select></label>
-      </div>
-      <div id="demo-selected"></div>
-      <div id="demo-ranking"></div>`;
-    const render=()=>{
-      const idx=Number($('#demo-material').value)||0;
-      const gasIdx=Number($('#demo-sort').value)||0;
-      const cur=mats[idx];
-      $('#demo-selected').innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 10px">
-        ${(cur.gas||[]).map(g=>`<div style="flex:1 1 120px;border:1px solid rgba(127,127,127,.28);border-radius:10px;padding:10px 12px">
-          <div style="font-size:12px;opacity:.72">${esc(g.label)}</div>
-          <div style="font-size:22px;line-height:1.3">${cell(g.value)}</div></div>`).join('')}
-      </div>
-      <p class="caption">${esc(cur.name)}${cur.formula?'（'+esc(cur.formula)+'）':''}${cur.atoms?' · '+cur.atoms+' 个原子':''}${cur.volume?' · 晶胞体积 '+cur.volume+' Å³':''}　模型输出原始尺度，见下方说明</p>
-      <h3>该结构的气体吸附相关预测</h3>
-      <div class="table-scroll"><table><thead><tr><th>气体</th><th>预测值（模型原始尺度）</th><th>在本批结构中的排名</th></tr></thead><tbody>
-        ${(cur.gas||[]).map((g,gi)=>{
-          const ordered=[...mats].sort((a,b)=>(b.gas[gi]?.value??-Infinity)-(a.gas[gi]?.value??-Infinity));
-          const rank=ordered.findIndex(m=>m===cur)+1;
-          return `<tr><td>${esc(g.label)}</td><td>${cell(g.value)}</td><td>${rank} / ${mats.length}</td></tr>`;
-        }).join('')}
-      </tbody></table></div>
-      <h3>该结构的材料性质预测</h3>
-      <div class="table-scroll"><table><thead><tr><th>性质</th><th>预测值</th><th>单位</th></tr></thead><tbody>
-        ${(cur.properties||[]).map(p=>`<tr><td>${esc(p.label)}</td><td>${cell(p.value)}</td><td>${esc(p.unit||'—')}</td></tr>`).join('')}
-      </tbody></table></div>`;
-      const label=gasLabels[gasIdx];
-      const ordered=[...mats].sort((a,b)=>(b.gas[gasIdx]?.value??-Infinity)-(a.gas[gasIdx]?.value??-Infinity));
-      $('#demo-ranking').innerHTML=`<h3>横向比较：按 ${esc(label)} 排序（共 ${mats.length} 个结构）</h3>
-        <div class="table-scroll"><table><thead><tr><th>#</th><th>结构</th><th>${esc(label)}</th><th>相对量级</th></tr></thead><tbody>
-        ${ordered.map((m,i)=>`<tr${m===cur?' style="font-weight:600;background:rgba(95,208,160,.12)"':''}><td>${i+1}</td><td>${esc(m.name)}</td><td>${cell(m.gas[gasIdx]?.value)}</td><td>${'▍'.repeat(Math.max(1,Math.round(12*(m.gas[gasIdx]?.value/ordered[0].gas[gasIdx]?.value||0))))}</td></tr>`).join('')}
-        </tbody></table></div>
-        <p class="warning">以上数值为预置的模型输出，由本机计算服务对真实晶体结构推理得到，用于展示计算链路与教学演示；不等同于实验测量，也不作为材料设计依据，单位与适用域待核验。实时提交新结构需在本机启动计算服务。</p>`;
-    };
-    $('#demo-material').onchange=render;
-    $('#demo-sort').onchange=render;
-    render();
-  }catch(error){box.innerHTML='<p class="caption">预置模型输出暂不可用。</p>';}
-}
-
 function navigate(page) {
   clearTimeout(searchTimer);scene?.dispose();scene=null;viewVersion++;selectionVersion++;
   state.page=['overview','library','archive','models','predict','properties','screening','history','linked'].includes(page)?page:'overview';
