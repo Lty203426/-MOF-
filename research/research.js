@@ -185,26 +185,64 @@ function service(page='predict') {
   for(const [button,target] of [['predict','predict'],['properties','properties'],['screening','screening'],['history','history']])$('#launch-'+button).onclick=()=>openCompute(target);
   loadDemoPredictions();
 }
-// 预置模型输出：把本机真实推理的结果存成静态 JSON，公网或其他电脑上也能展示（不伪造、不现场计算）。
+// 预置模型输出：本机真实推理结果静态化，任何电脑或手机打开都能自己选结构看数值（不伪造、不现场计算）。
 async function loadDemoPredictions(){
   const box=$('#demo-predictions');
   if(!box)return;
   try{
     const data=await readJSON('demo-predictions.json');
-    const mats=data.materials||[];
+    const mats=(data.materials||[]).filter(m=>(m.gas||[]).length&&(m.properties||[]).length);
     if(!mats.length)throw new Error('空');
-    const gases=mats[0].gas||[], props=mats[0].properties||[];
+    const gasLabels=mats[0].gas.map(g=>g.label);
+    const propDefs=mats[0].properties.map(p=>({label:p.label,unit:p.unit||''}));
     const cell=v=>Number(v).toLocaleString('zh-CN',{maximumSignificantDigits:5});
-    box.innerHTML=`<h2>预置模型输出（扫码即可查看，无需安装）</h2>
-      <p class="caption">${esc(data.note||'')} 生成于 ${esc(data.generated||'')}，引擎 ${esc(data.engine||'')}；${mats.length} 个结构 × ${gases.length} 个气体模型、${props.length} 项材料性质。</p>
-      <h3>气体吸附相关预测</h3>
-      <div class="table-scroll"><table><thead><tr><th>结构</th>${gases.map(g=>`<th>${esc(g.label)}</th>`).join('')}</tr></thead><tbody>${mats.map(m=>`<tr><td>${esc(m.name)}<small>${esc(m.formula||'')}${m.atoms?' · '+m.atoms+' 原子':''}</small></td>${(m.gas||[]).map(g=>`<td>${cell(g.value)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
-      <p class="caption">${esc(data.gas_unit_note||'')}</p>
-      <h3>材料性质预测</h3>
-      <div class="table-scroll"><table><thead><tr><th>结构</th>${props.map(p=>`<th>${esc(p.label)}<small>${esc(p.unit||'')}</small></th>`).join('')}</tr></thead><tbody>${mats.map(m=>`<tr><td>${esc(m.name)}</td>${(m.properties||[]).map(p=>`<td>${cell(p.value)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
-      <p class="warning">以上为预置的模型输出，用于展示计算链路与界面，不等同于实验测量，也不作为材料设计依据；实时推理请在本机启动计算服务后使用。</p>`;
+    const selStyle='padding:8px 10px;border-radius:8px;border:1px solid rgba(127,127,127,.35);background:transparent;color:inherit;font-size:14px';
+    box.innerHTML=`<h2>在线体验：选一个结构，看它的预测值</h2>
+      <p class="caption">${esc(data.note||'')} 生成于 ${esc(data.generated||'')}，引擎 ${esc(data.engine||'')}。已预置 ${mats.length} 个结构的真实推理结果，切换即可查看，无需安装任何软件。</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin:14px 0 4px">
+        <label style="display:flex;flex-direction:column;gap:6px;flex:1 1 260px;font-size:13px">选择结构
+          <select id="demo-material" style="${selStyle}">${mats.map((m,i)=>`<option value="${i}">${esc(m.name)}${m.formula?' · '+esc(m.formula):''}</option>`).join('')}</select></label>
+        <label style="display:flex;flex-direction:column;gap:6px;flex:0 1 170px;font-size:13px">排序依据
+          <select id="demo-sort" style="${selStyle}">${gasLabels.map((l,i)=>`<option value="${i}">${esc(l)}</option>`).join('')}</select></label>
+      </div>
+      <div id="demo-selected"></div>
+      <div id="demo-ranking"></div>`;
+    const render=()=>{
+      const idx=Number($('#demo-material').value)||0;
+      const gasIdx=Number($('#demo-sort').value)||0;
+      const cur=mats[idx];
+      $('#demo-selected').innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 10px">
+        ${(cur.gas||[]).map(g=>`<div style="flex:1 1 120px;border:1px solid rgba(127,127,127,.28);border-radius:10px;padding:10px 12px">
+          <div style="font-size:12px;opacity:.72">${esc(g.label)}</div>
+          <div style="font-size:22px;line-height:1.3">${cell(g.value)}</div></div>`).join('')}
+      </div>
+      <p class="caption">${esc(cur.name)}${cur.formula?'（'+esc(cur.formula)+'）':''}${cur.atoms?' · '+cur.atoms+' 个原子':''}${cur.volume?' · 晶胞体积 '+cur.volume+' Å³':''}　模型输出原始尺度，见下方说明</p>
+      <h3>该结构的气体吸附相关预测</h3>
+      <div class="table-scroll"><table><thead><tr><th>气体</th><th>预测值（模型原始尺度）</th><th>在本批结构中的排名</th></tr></thead><tbody>
+        ${(cur.gas||[]).map((g,gi)=>{
+          const ordered=[...mats].sort((a,b)=>(b.gas[gi]?.value??-Infinity)-(a.gas[gi]?.value??-Infinity));
+          const rank=ordered.findIndex(m=>m===cur)+1;
+          return `<tr><td>${esc(g.label)}</td><td>${cell(g.value)}</td><td>${rank} / ${mats.length}</td></tr>`;
+        }).join('')}
+      </tbody></table></div>
+      <h3>该结构的材料性质预测</h3>
+      <div class="table-scroll"><table><thead><tr><th>性质</th><th>预测值</th><th>单位</th></tr></thead><tbody>
+        ${(cur.properties||[]).map(p=>`<tr><td>${esc(p.label)}</td><td>${cell(p.value)}</td><td>${esc(p.unit||'—')}</td></tr>`).join('')}
+      </tbody></table></div>`;
+      const label=gasLabels[gasIdx];
+      const ordered=[...mats].sort((a,b)=>(b.gas[gasIdx]?.value??-Infinity)-(a.gas[gasIdx]?.value??-Infinity));
+      $('#demo-ranking').innerHTML=`<h3>横向比较：按 ${esc(label)} 排序（共 ${mats.length} 个结构）</h3>
+        <div class="table-scroll"><table><thead><tr><th>#</th><th>结构</th><th>${esc(label)}</th><th>相对量级</th></tr></thead><tbody>
+        ${ordered.map((m,i)=>`<tr${m===cur?' style="font-weight:600;background:rgba(95,208,160,.12)"':''}><td>${i+1}</td><td>${esc(m.name)}</td><td>${cell(m.gas[gasIdx]?.value)}</td><td>${'▍'.repeat(Math.max(1,Math.round(12*(m.gas[gasIdx]?.value/ordered[0].gas[gasIdx]?.value||0))))}</td></tr>`).join('')}
+        </tbody></table></div>
+        <p class="warning">以上数值为预置的模型输出，由本机计算服务对真实晶体结构推理得到，用于展示计算链路与教学演示；不等同于实验测量，也不作为材料设计依据，单位与适用域待核验。实时提交新结构需在本机启动计算服务。</p>`;
+    };
+    $('#demo-material').onchange=render;
+    $('#demo-sort').onchange=render;
+    render();
   }catch(error){box.innerHTML='<p class="caption">预置模型输出暂不可用。</p>';}
 }
+
 function navigate(page) {
   clearTimeout(searchTimer);scene?.dispose();scene=null;viewVersion++;selectionVersion++;
   state.page=['overview','library','archive','models','predict','properties','screening','history','linked'].includes(page)?page:'overview';
